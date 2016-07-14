@@ -1,0 +1,181 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+
+    <h:form id="frm">
+        <h:panelGrid styleClass="panelGridStandart" columns="3" >
+            <h:graphicImage library="images" name="chk_logo.jpg" height="60px"   />
+            <h3 style="text-align: center">Pesadas en Bascula del Complejo Industrial</h3>
+            <h:graphicImage library="images" name="industria_logo.gif" height="50px"/>
+        </h:panelGrid>
+        <h:panelGrid styleClass="panelGridStandart">
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid columns="6" cellpadding="5">
+                        <h:outputText value="Periodo: "></h:outputText>
+                        <p:selectOneMenu id="selectedRango" value="#{pesadasBean.selectedRango}" >
+                            <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Hoy" itemValue="1" />
+                            <f:selectItem itemLabel="Ayer" itemValue="2" />
+                            <f:selectItem itemLabel="Esta semana" itemValue="3" />
+                            <f:selectItem itemLabel="Este mes" itemValue="4" />
+                            <f:selectItem itemLabel="Este año" itemValue="5" />
+                            <p:ajax event="change" update="lista desdeFecha hastaFecha"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Fecha desde: "></h:outputText>
+                        <p:calendar id="desdeFecha" value="#{pesadasBean.fechaDesde}" pattern="dd/MM/yyyy HH:mm" mask="true">
+                            <p:ajax event="dateSelect" update="lista"/>
+                        </p:calendar>
+                        <h:outputText value="Fecha hasta: "></h:outputText>
+                        <p:calendar id="hastaFecha" value="#{pesadasBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" mask="true">
+                            <p:ajax event="dateSelect" update="lista"/>
+                        </p:calendar>
+                    </h:panelGrid>
+                </f:facet>
+            </p:toolbar>
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid columns="4" cellpadding="5" >
+                        <h:outputText value="Empresa: "></h:outputText>
+                        <p:selectOneMenu id="selectedEmpresa" value="#{pesadasBean.selectedEmpresa}" required="true" filter="true" converter="#{empresaConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}" />
+                            <f:selectItems value="#{pesadasBean.empresaList}" var="empresa" itemValue="#{empresa}" itemLabel="#{empresa.nombre}"/>
+
+                            <p:ajax event="change" update="lista"  />
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Producto: "></h:outputText>
+                        <p:selectOneMenu id="selectedProducto" value="#{pesadasBean.selectedProducto}" required="true" filter="true" converter="#{productoConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}" />
+                            <f:selectItems value="#{pesadasBean.productosList}" var="producto" itemValue="#{producto}" itemLabel="#{producto.descripcion}"  />
+
+                            <p:ajax event="change" update="lista"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </f:facet>
+
+            </p:toolbar>
+        </h:panelGrid>
+        <h:panelGrid id="lista" styleClass="panelGridStandart">
+            <p:dataTable id="tabla"  emptyMessage="No hay registros." var="pesadas" value="#{pesadasBean.pesadasList}"
+                         tableStyle="table-layout: auto; "
+                         filteredValue="#{pesadasBean.pesadasFilteredList}"
+                         widgetVar="pesadasTabla">
+                <f:facet name="header">
+                    <div align="right">
+                        <p:outputPanel >
+                            <h:outputText value="Buscar:"  />
+                            <p:inputText  id="globalFilter" onkeyup="PF('pesadasTabla').filter()" style="width:150px;" placeholder="" />
+                        </p:outputPanel>
+                    </div>
+                </f:facet>
+                <p:column  filterBy="#{pesadas.id}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Nº" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.id}" />
+                    <f:facet name="footer">
+                        <h:outputText value="TOTAL" style="font-weight: bold;" />
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Fecha/Hora" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.fechahora}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+                    </h:outputText>
+                </p:column>
+                <p:column filterBy="#{pesadas.chapa}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Chapa Nº" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.chapa}" />
+                </p:column>
+                <p:column filterBy="#{pesadas.empresaid.nombre}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Empresa" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.empresaid.nombre}" />
+                </p:column>
+                <p:column filterBy="#{pesadas.productoid.descripcion}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Producto" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.productoid.descripcion}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Bruto" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.bruto}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{pesadasBean.pesadasList.stream().map(x -> x.getBruto()).sum()}"  style=" font-weight: bold; float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Tara" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.tara}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{pesadasBean.pesadasList.stream().map(x -> x.getTara()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Neto" />
+                    </f:facet>
+                    <h:outputText value="#{pesadas.bruto-pesadas.tara}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{pesadasBean.pesadasList.stream().map(x -> x.getBruto()-x.getTara()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+            </p:dataTable>
+        </h:panelGrid>
+        <h:panelGrid styleClass="panelGridStandart">
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid cellpadding="5">
+                        <h:outputText value="Existen #{pesadasBean.pesadasList.size()} pesasdas en el periodo seleccionado."></h:outputText>
+                    </h:panelGrid>
+                </f:facet>
+                <f:facet name="right">
+                    <h:panelGrid cellpadding="5" columns="2">
+                        <h:commandLink >
+                            <p:graphicImage library="images" name="xls.png" height="20" width="20" />
+                            <p:dataExporter type="xls" postProcessor="#{commonBean.postProcessXLS}"
+                                            target="tabla" fileName="lista" />
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage library="images" name="pdf.png" height="20" width="20" />
+                            <p:dataExporter  type="pdf" target="tabla" fileName="lista" />
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage library="images" name="print.png" height="20" width="20" />
+                            <p:printer target="frm" />
+                        </h:commandLink>
+                    </h:panelGrid>
+                </f:facet>
+            </p:toolbar>
+        </h:panelGrid>
+    </h:form>
+</ui:composition>
+

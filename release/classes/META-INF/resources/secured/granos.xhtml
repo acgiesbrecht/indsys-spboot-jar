@@ -1,0 +1,267 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h3 style="text-align: center">Detalle Granos</h3>
+
+    <h:form id="frm">
+        <h:panelGrid styleClass="panelGridStandart">
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid columns="6" cellpadding="5">
+                        <h:outputText value="Periodo: "></h:outputText>
+                        <p:selectOneMenu id="selectedRango" value="#{granosBean.selectedRango}" >
+                            <f:selectItem itemLabel="" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Hoy" itemValue="1" />
+                            <f:selectItem itemLabel="Ayer" itemValue="2" />
+                            <f:selectItem itemLabel="Esta semana" itemValue="3" />
+                            <f:selectItem itemLabel="Este mes" itemValue="4" />
+                            <f:selectItem itemLabel="Este año" itemValue="5" />
+                            <p:ajax event="change" update="lista desdeFecha hastaFecha"/>
+                        </p:selectOneMenu>
+                        <h:outputText value="Fecha desde: "></h:outputText>
+                        <p:calendar id="desdeFecha" value="#{granosBean.fechaDesde}" pattern="dd/MM/yyyy HH:mm" mask="true">
+                            <p:ajax event="dateSelect" update="lista"/>
+                        </p:calendar>
+                        <h:outputText value="Fecha hasta: "></h:outputText>
+                        <p:calendar id="hastaFecha" value="#{granosBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" mask="true">
+                            <p:ajax event="dateSelect" update="lista"/>
+                        </p:calendar>
+                    </h:panelGrid>
+                </f:facet>
+            </p:toolbar>
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid columns="4" cellpadding="5" >
+                        <h:outputText value="Empresa: "></h:outputText>
+                        <p:selectOneMenu id="selectedEmpresa" value="#{granosBean.selectedEmpresa}" required="true" filter="true" converter="#{empresaConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}" />
+                            <f:selectItems value="#{granosBean.empresaList}" var="empresa" itemValue="#{empresa}" itemLabel="#{empresa.nombre}"/>
+
+                            <p:ajax event="change" update="lista"  />
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Producto: "></h:outputText>
+                        <p:selectOneMenu id="selectedProducto" value="#{granosBean.selectedProducto}" required="true" filter="true" converter="#{productoConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}" />
+                            <f:selectItems value="#{granosBean.productosGranosList}" var="producto" itemValue="#{producto}" itemLabel="#{producto.descripcion}"  />
+
+                            <p:ajax event="change" update="lista"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </f:facet>
+
+            </p:toolbar>
+        </h:panelGrid>
+        <h:panelGrid id="lista" styleClass="panelGridStandart">
+            <p:dataTable id="tabla"  emptyMessage="No hay registros." var="granos" value="#{granosBean.granosList}"
+                         tableStyle="table-layout: auto; "
+                         filteredValue="#{granosBean.granosFilteredList}"
+                         widgetVar="granosTabla">
+                <f:facet name="header">
+                    <div align="right">
+                        <p:outputPanel >
+                            <h:outputText value="Buscar:"  />
+                            <p:inputText  id="globalFilter" onkeyup="PF('granosTabla').filter()" style="width:150px;" placeholder="" />
+                        </p:outputPanel>
+                    </div>
+                </f:facet>
+                <p:column  filterBy="#{granos.id}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Nº" />
+                    </f:facet>
+                    <h:outputText value="#{granos.id}" />
+                    <f:facet name="footer">
+                        <h:outputText value="TOTAL" style="font-weight: bold;" />
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Fecha/Hora" />
+                    </f:facet>
+                    <h:outputText value="#{granos.fechahora}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+                    </h:outputText>
+                </p:column>
+                <p:column filterBy="#{granos.chapa}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Chapa Nº" />
+                    </f:facet>
+                    <h:outputText value="#{granos.chapa}" />
+                </p:column>
+                <p:column filterBy="#{granos.productor}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Empresa" />
+                    </f:facet>
+                    <h:outputText value="#{granos.productor}" />
+                </p:column>
+                <p:column filterBy="#{granos.producto}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Producto" />
+                    </f:facet>
+                    <h:outputText value="#{granos.producto}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Impurezas" />
+                    </f:facet>
+                    <h:outputText value="#{granos.impurezas}"  style="float:right">
+                        <!--<f:convertNumber  maxFractionDigits="2"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Humedad" />
+                    </f:facet>
+                    <h:outputText value="#{granos.humedad}"  style="float:right">
+                        <!--<f:convertNumber  maxFractionDigits="2"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Granos Quebrados" />
+                    </f:facet>
+                    <h:outputText value="#{granos.quebrados}"  style="float:right">
+                        <!--<f:convertNumber  maxFractionDigits="2"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Granos Ardidos" />
+                    </f:facet>
+                    <h:outputText value="#{granos.quebrados}"  style="float:right">
+                        <!--<f:convertNumber  maxFractionDigits="2"/>-->
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value=" Peso Neto" />
+                    </f:facet>
+                    <h:outputText value="#{granos.neto}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getNeto()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descuento por Impurezas" />
+                    </f:facet>
+                    <h:outputText value="#{granos.pesoImpurezas}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getPesoImpurezas()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descuento por Humedad" />
+                    </f:facet>
+                    <h:outputText value="#{granos.pesoHumedad}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getPesoHumedad()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descuento por Quebrados" />
+                    </f:facet>
+                    <h:outputText value="#{granos.pesoQuebrados}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getPesoQuebrados()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descuento por Ardidos" />
+                    </f:facet>
+                    <h:outputText value="#{granos.pesoArdidos}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getPesoArdidos()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Neto Liquido" />
+                    </f:facet>
+                    <h:outputText value="#{granos.netoLiquido}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getNetoLiquido()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Precio" />
+                    </f:facet>
+                    <h:outputText value="#{granos.precioGsPorKg}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Precio" />
+                    </f:facet>
+                    <h:outputText value="#{granos.monto}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{granosBean.granosList.stream().map(x -> x.getMonto()).sum()}"  style="font-weight: bold;float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+            </p:dataTable>
+            <h:panelGrid styleClass="panelGridStandart">
+                <p:toolbar>
+                    <f:facet name="left">
+                        <h:panelGrid cellpadding="5">
+                            <h:outputText value="Existen #{granosBean.granosList.size()} pesasdas en el periodo seleccionado."></h:outputText>
+                        </h:panelGrid>
+                    </f:facet>
+                    <f:facet name="right">
+                        <h:panelGrid cellpadding="5" columns="2">
+                            <h:commandLink >
+                                <p:graphicImage library="images" name="xls.png" height="20" width="20" />
+                                <p:dataExporter type="xls" postProcessor="#{commonBean.postProcessXLS}"
+                                                target="tabla" fileName="lista" />
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage library="images" name="pdf.png" height="20" width="20" />
+                                <p:dataExporter  type="pdf" target="tabla" fileName="lista" />
+                            </h:commandLink>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:toolbar>
+            </h:panelGrid>
+        </h:panelGrid>
+
+
+    </h:form>
+</ui:composition>
+

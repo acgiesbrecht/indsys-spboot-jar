@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+
+    <h:form  id="frm">
+        <h:panelGrid styleClass="panelGridStandart" columns="3" >
+            <h:graphicImage library="images" name="chk_logo.jpg" height="60px"   />
+            <h3 style="text-align: center">Informe de Desmote de Algodón - Resumen por Lote / Productor</h3>
+            <h:graphicImage library="images" name="industria_logo.gif" height="50px"/>
+        </h:panelGrid>
+        <h:panelGrid id="menu" styleClass="panelGridStandart">
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid cellpadding="5" columns="6" >
+                        <h:outputText value="Año: "></h:outputText>
+                        <p:selectOneMenu id="selectedAno" value="#{dalResumenBean.selectedAno}" required="true" filter="true">
+                            <f:selectItems value="#{dalResumenBean.anosList}"/>
+                            <p:ajax event="change" update="menu lista"  />
+                        </p:selectOneMenu>
+                        <h:outputText value="Empresa: "></h:outputText>
+                        <p:selectOneMenu id="selectedEmpresa" value="#{dalResumenBean.selectedEmpresa}" filter="true" converter="#{empresaConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}"  noSelectionOption="true"/>
+                            <f:selectItems value="#{dalResumenBean.empresaList}" var="empresa" itemValue="#{empresa}" itemLabel="#{empresa.nombre}"/>
+                            <p:ajax event="change" update="menu lista"  />
+                        </p:selectOneMenu>
+                        <h:outputText value="Lote: " ></h:outputText>
+                        <p:selectOneMenu id="selectedLote" value="#{dalResumenBean.selectedLote}" filter="true"  converter="#{dalLotesConverter}">
+                            <f:selectItem itemLabel="TODOS" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{dalResumenBean.lotesList}" var="lote" itemValue="#{lote}" itemLabel="#{lote.nroLoteAnual}"/>
+                            <p:ajax event="change" update="lista"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </f:facet>
+
+            </p:toolbar>
+        </h:panelGrid>
+        <h:panelGrid id="lista" styleClass="panelGridStandart">
+            <p:dataTable id="tabla"  emptyMessage="No hay registros." var="resumen" value="#{dalResumenBean.resumenList}"
+                         tableStyle="table-layout: auto; ">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Tipo" />
+                    </f:facet>
+                    <h:outputText value="#{resumen.tipo}" />
+                    <f:facet name="footer">
+                        <h:outputText value="TOTAL" style="float:left; font-weight: bold;" />
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Micronaire" />
+                    </f:facet>
+                    <h:outputText value="#{resumen.micronaire}"  style="text-align:center"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Cantidad Fardos" />
+                    </f:facet>
+                    <h:outputText value="#{resumen.cantidad}"  style="float:right">
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{dalResumenBean.resumenList.stream().map(x -> x.getCantidad()).sum()}"  style=" font-weight: bold; float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Peso (Kg)" />
+                    </f:facet>
+                    <h:outputText value="#{resumen.peso}" style="float:right" >
+                        <f:convertNumber pattern="#,###" locale="es_PY"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                        <h:outputText value="#{dalResumenBean.resumenList.stream().map(x -> x.getPeso()).sum()}"  style=" font-weight: bold; float:right" >
+                            <f:convertNumber pattern="#,###" locale="es_PY"/>
+                        </h:outputText>
+                    </f:facet>
+                </p:column>
+            </p:dataTable>
+        </h:panelGrid>
+        <h:panelGrid styleClass="panelGridStandart">
+            <p:toolbar>
+                <f:facet name="left">
+                    <h:panelGrid cellpadding="5">
+                        <h:outputText value="Existen #{resumenBean.resumenList.size()} tipos en el periodo/lote seleccionado."></h:outputText>
+                    </h:panelGrid>
+                </f:facet>
+                <f:facet name="right">
+                    <h:panelGrid cellpadding="5" columns="3">
+                        <h:commandLink >
+                            <p:graphicImage library="images" name="xls.png" height="20" width="20" />
+                            <p:dataExporter type="xls" postProcessor="#{commonBean.postProcessXLS}"
+                                            target="tabla" fileName="lista" />
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage library="images" name="pdf.png" height="20" width="20" />
+                            <p:dataExporter  type="pdf" target="tabla" fileName="lista" />
+                        </h:commandLink>
+                        <h:commandLink>
+                            <p:graphicImage library="images" name="print.png" height="20" width="20" />
+                            <p:printer target="frm" />
+                        </h:commandLink>
+                    </h:panelGrid>
+                </f:facet>
+            </p:toolbar>
+        </h:panelGrid>
+    </h:form>
+</ui:composition>
+

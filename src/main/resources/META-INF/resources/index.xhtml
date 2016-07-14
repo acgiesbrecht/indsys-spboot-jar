@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Complejo Industrial Web</title>
+            </f:facet>
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+            </style>
+        </h:head>
+        <h:body >
+            <f:facet name="last">
+                <h:outputStylesheet library="css" name="style.css" />
+            </f:facet>
+            <p:layout id="page" fullPage="true">
+
+                <p:layoutUnit id="center" position="center" style=" width: 960px;">
+                    <h:form id="form1">
+                        <h:panelGrid columns="3" styleClass="panelGridStandart noprint menuHeader">
+
+                            <p:menubar id="menubar" >
+                                <p:submenu label="Administracion">
+                                    <p:menuitem value="Horas laborales" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/admin/tiempos.xhtml')}" />
+                                    <!--<p:menuitem value="Marcas de Reloj" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/admin/marcas.xhtml')}" />
+                                    <p:menuitem value="Empleados" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/admin/empleados.xhtml')}" />-->
+                                </p:submenu>
+                                <p:submenu label="Algodon">
+                                    <p:menuitem value="Resumen" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/dal/resumen.xhtml')}" />
+                                    <p:menuitem value="Liquidacion" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/dal/liquidacion.xhtml')}" />
+                                    <p:menuitem value="Bonificacion" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/dal/bonificacion.xhtml')}" />
+                                </p:submenu>
+                                <p:submenu label="Bascula">
+                                    <p:menuitem value="Pesadas" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/bas/pesadas.xhtml')}" />
+                                    <p:menuitem value="Precios vigentes" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/bas/precios.xhtml')}" />
+                                    <p:menuitem value="Granos Detalle" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/bas/granos.xhtml')}" />
+                                    <p:menuitem value="Sesamo Detalle" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/bas/sesamo.xhtml')}" />
+                                </p:submenu>
+                                <p:submenu label="Balanceados">
+                                </p:submenu>
+                                <!--<p:submenu label="Caldera">
+                                    <p:menuitem value="Lotes" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('')}" />
+                                    <p:menuitem value="Tambores" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('')}" />
+                                    <p:menuitem value="Vapor" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/fps/vapor.xhtml')}" />
+                                    <p:menuitem value="Horario de Reactores" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/fps/horario.xhtml')}" />
+                                </p:submenu>-->
+                                <p:submenu label="Energia">
+                                    <p:menuitem value="Comsumo NIS" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/consumoNis.xhtml')}" />
+                                    <p:menuitem value="NIS sin Lectura" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/nisSinLectura.xhtml')}" />
+                                    <p:separator />
+                                    <p:menuitem value="GIS" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/gis.xhtml')}" />
+                                </p:submenu>
+                                <!--<p:submenu label="Laboratorio">
+                                </p:submenu>-->
+                            </p:menubar>
+
+                        </h:panelGrid>
+                        <h:panelGrid styleClass="panelGridStandart">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        </h:panelGrid>
+                    </h:form>
+                    <h:panelGroup id="contentPanel" >
+                        <ui:include id="content" src="#{layoutController.navigation}" />
+                    </h:panelGroup>
+
+                    <h:panelGrid styleClass="panelGridStandart">
+                        <p:separator />
+                        <div style=" font-size: 10px; margin: 0 auto;">
+                            &#169; 1927 - 2016 | Todos los derechos reservados.
+                            <br />
+                            Cooperativa Chortitzer Ltda.
+                        </div>
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

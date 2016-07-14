@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:panelGrid id="lista"  styleClass="panelGridStandart">
+        <h:form id="dtForm">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:dataTable id="dtLotes" var="lote" value="#{lotesBean.tblFpsLotesList}" editMode="cell" editable="true" widgetVar="cellLotes">
+                <f:facet name="header">
+                    Lotes
+                </f:facet>
+
+                <p:ajax event="cellEdit" listener="#{lotesBean.onCellEdit}" update=":dtForm:msgs :dtForm:dtLotes" />
+
+                <p:column headerText="ID">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lote.id}" /></f:facet>
+                        <f:facet name="input"><p:inputText disabled="true" id="idInput" value="#{lote.id}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="ID Fabrica">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lote.idFabrica}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="idFabricaInput" value="#{lote.idFabrica}" style="width:96%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Fecha">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lote.fecha}" /></f:facet>
+                        <f:facet name="input">
+                            <p:inputMask id="fechaInput" styleClass="input-mask" value="#{lote.fecha}" mask="99/99/9999" required="true">
+                                <f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" type="date" />
+                            </p:inputMask>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Observacion">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{lote.obs}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="obsInput" value="#{lote.obs}" style="width:96%" label="Observacion"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton  icon="ui-icon-trash" actionListener="#{lotesBean.deleteLote(lote)}" update="dtLotes" />
+                </p:column>
+
+            </p:dataTable>
+            <p:commandButton  actionListener="#{lotesBean.addLote}"   value="Nuevo" update="dtLotes" />
+        </h:form>
+    </h:panelGrid>
+
+</ui:composition>
+

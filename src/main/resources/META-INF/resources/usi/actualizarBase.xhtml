@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="frm">
+        <p:outputLabel id="msg" value="#{actualizarBaseBean.status}" />
+        <p:fileUpload fileUploadListener="#{actualizarBaseBean.upload}"
+                      label="Eligir Archivo SHP" rendered="#{actualizarBaseBean.up}" update=":frm"
+                      mode="advanced" dragDropSupport="true" multiple="true"/>
+    </h:form>
+</ui:composition>
+
