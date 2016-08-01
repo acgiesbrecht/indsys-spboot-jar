@@ -71,7 +71,7 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Lectura" />
+                        <h:outputText value="Lectura kWh" />
                     </f:facet>
                     <h:outputText value="#{consumoNis.kwh}" style="float:right">
                         <f:convertNumber pattern="#,##0"/>
@@ -79,12 +79,12 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Consumo" />
+                        <h:outputText value="Consumo kWh" />
                     </f:facet>
                     <h:outputText value="#{consumoNis.consumo}" style="float:right">
                         <f:convertNumber pattern="#,##0"/>
                     </h:outputText>
-                </p:column>
+                </p:column>               
             </p:dataTable>
         </h:panelGrid>
         <h:panelGrid styleClass="panelGridStandart">

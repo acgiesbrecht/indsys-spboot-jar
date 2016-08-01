@@ -68,6 +68,7 @@ public interface TblIndUsiRegistroLecturasRepository extends JpaRepository<TblIn
             + "u.\"NRSERIE\", "
             + "u.\"USUARIO\", "
             + "l.kwh, "
+            + "l.kvar, "
             + "l.kwh - (SELECT x.kwh "
             + "FROM tbl_ind_usi_registro_lecturas x "
             + "WHERE l.fechahora - x.fechahora > '10 days' AND "

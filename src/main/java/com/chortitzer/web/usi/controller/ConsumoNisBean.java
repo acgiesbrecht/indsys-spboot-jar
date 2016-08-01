@@ -89,7 +89,8 @@ public class ConsumoNisBean {
                 cnm.setNrserie((BigInteger) o[2]);
                 cnm.setUsuario(o[3].toString());
                 cnm.setKwh((int) o[4]);
-                cnm.setConsumo(o[5] != null ? (int) o[5] : 0);
+                cnm.setKvar((int) o[5]);
+                cnm.setConsumo(o[6] != null ? (int) o[6] : 0);                
                 consumoNisList.add(cnm);
             });
             return consumoNisList;

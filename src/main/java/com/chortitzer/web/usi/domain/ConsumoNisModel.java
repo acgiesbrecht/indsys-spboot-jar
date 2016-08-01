@@ -38,6 +38,8 @@ public class ConsumoNisModel implements Serializable {
     private String usuario;
     @Column(name = "kwh")
     private Integer kwh;
+    @Column(name = "kvar")
+    private Integer kvar;
     @Column(name = "consumo")
     private Integer consumo;
 
@@ -99,6 +101,38 @@ public class ConsumoNisModel implements Serializable {
 
     public void setConsumo(Integer consumo) {
         this.consumo = consumo;
+    }
+
+    /**
+     * @return the kvar
+     */
+    public Integer getKvar() {
+        return kvar;
+    }
+
+    /**
+     * @param kvar the kvar to set
+     */
+    public void setKvar(Integer kvar) {
+        this.kvar = kvar;
+    }
+
+    public Double getPowerFactor() {
+        if (kvar != null && kwh != null) {
+            return Math.cos(Math.atan(kvar.doubleValue() / kwh.doubleValue()));
+        } else {
+            return -1.0d;
+        }
+
+    }
+    
+    public Integer getPorcentajePenalizacion(){
+        Long cent = 92 - Math.round(getPowerFactor() * 100);
+        if(cent > 0){
+            return cent.intValue() * 4;
+        }else{
+            return 0;
+        }
     }
 
 }
