@@ -30,8 +30,8 @@
 
         <h:panelGrid id="lista"  styleClass="panelGridStandart">
             <p:dataTable id="tabla" emptyMessage="No hay registros."  widgetVar="consumoNisTabla"
-                         var="consumoNis" value="#{consumoNisBean.consumoNisList}"
-                         tableStyle="table-layout: auto;" filteredValue="#{consumoNisBean.consumoNisFilteredList}">
+                         var="consumoNis" value="#{consumoNisBean.consumoNisCompletoList}"
+                         tableStyle="table-layout: auto;" filteredValue="#{consumoNisBean.consumoNisCompletoFilteredList}">
                 <f:facet name="header">
                     <div align="right">
                         <p:outputPanel >
@@ -84,38 +84,14 @@
                     <h:outputText value="#{consumoNis.consumo}" style="float:right">
                         <f:convertNumber pattern="#,##0"/>
                     </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Lectura kVAr" />
-                    </f:facet>
-                    <h:outputText value="#{consumoNis.kvar}" style="float:right">
-                        <f:convertNumber pattern="#,##0"/>
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Factor de Potencia" />
-                    </f:facet>
-                    <h:outputText value="#{consumoNis.powerFactor}" style="float:right">
-                        <f:convertNumber pattern="#,##0.00"/>
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Porcentaje de Penalizacion" />
-                    </f:facet>
-                    <h:outputText value="#{consumoNis.porcentajePenalizacion}" style="float:right">
-                        <f:convertNumber pattern="#,##0.00"/>
-                    </h:outputText>
-                </p:column>
+                </p:column>               
             </p:dataTable>
         </h:panelGrid>
         <h:panelGrid styleClass="panelGridStandart">
             <p:toolbar>
                 <f:facet name="left">
                     <h:panelGrid columns="4" cellpadding="5">
-                        <h:outputText value="Existen #{consumoNisBean.consumoNisList.size()} lecturas en el mes seleccionado."></h:outputText>
+                        <h:outputText value="Existen #{consumoNisBean.consumoNisCompletoList.size()} lecturas en el mes seleccionado."></h:outputText>
                     </h:panelGrid>
                 </f:facet>
                 <f:facet name="right">

@@ -82,6 +82,30 @@ public interface TblIndUsiRegistroLecturasRepository extends JpaRepository<TblIn
             + " AND "
             + "EXTRACT(MONTH FROM l.fechahora) = ?1 AND "
             + "EXTRACT(YEAR FROM l.fechahora) = ?2 ORDER BY u.\"NIS\"", nativeQuery = true)
-    public List<Object[]> getConsumoNis(Integer mes, Integer ano);
+    public List<Object[]> getConsumoNisCompleto(Integer mes, Integer ano);
+    
+    @Query(value = "SELECT DISTINCT ON (u.\"NIS\") u.\"NIS\", "
+            + "l.fechahora, "
+            + "u.\"NRSERIE\", "
+            + "u.\"USUARIO\", "
+            + "l.kwh, "
+            + "l.kvar, "
+            + "l.kwh - (SELECT x.kwh "
+            + "FROM tbl_ind_usi_registro_lecturas x "
+            + "WHERE l.fechahora - x.fechahora > '10 days' AND "
+            + "x.fechahora < l.fechahora "
+            + "AND x.nroserie = l.nroserie "
+            + "ORDER BY fechahora DESC "
+            + "LIMIT 1) AS consumo "
+            + "FROM nis_usuario u, tbl_ind_usi_registro_lecturas l "
+            + "WHERE "
+            + " u.\"NRSERIE\" = l.nroserie "
+            + " AND "
+            + " to_number(coalesce(nullif(u.\"CATEG\", ''), '0'),'99') >= 50 "
+            + " AND to_number(coalesce(nullif(u.\"CATEG\", ''), '0'),'99') <= 79 "
+            + " AND "
+            + "EXTRACT(MONTH FROM l.fechahora) = ?1 AND "
+            + "EXTRACT(YEAR FROM l.fechahora) = ?2 ORDER BY u.\"NIS\"", nativeQuery = true)
+    public List<Object[]> getConsumoNisComInd(Integer mes, Integer ano);
 
 }

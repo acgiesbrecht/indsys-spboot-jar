@@ -71,10 +71,10 @@
                                                 actionListener="#{layoutController.setNavigation('/fps/horario.xhtml')}" />
                                 </p:submenu>-->
                                 <p:submenu label="Energia">
-                                    <p:menuitem value="Comsumo NIS Simple" update=":contentPanel"
-                                                actionListener="#{layoutController.setNavigation('/usi/consumoNis.xhtml')}" />
                                     <p:menuitem value="Comsumo NIS Completo" update=":contentPanel"
-                                                actionListener="#{layoutController.setNavigation('/usi/consumoNisFull.xhtml')}" />
+                                                actionListener="#{layoutController.setNavigation('/usi/consumoNisCompleto.xhtml')}" />
+                                    <p:menuitem value="Comsumo NIS Comercial e Industrial" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/consumoNisComInd.xhtml')}" />
                                     <p:menuitem value="NIS sin Lectura" update=":contentPanel"
                                                 actionListener="#{layoutController.setNavigation('/usi/nisSinLectura.xhtml')}" />
                                     <p:separator />

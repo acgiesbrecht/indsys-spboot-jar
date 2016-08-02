@@ -37,7 +37,10 @@ public class ConsumoNisBean {
     TblIndUsiRegistroLecturasRepository tblIndUsiRegistroLecturasRepository;
     Calendar calendar = Calendar.getInstance();
     List<ConsumoNisModel> consumoNisList;
-    private List<ConsumoNisModel> consumoNisFilteredList;
+    List<ConsumoNisModel> consumoNisCompletoList;
+    private List<ConsumoNisModel> consumoNisCompletoFilteredList;
+    List<ConsumoNisModel> consumoNisComIndList;
+    private List<ConsumoNisModel> consumoNisComIndFilteredList;
     private List<Integer> mesList = new ArrayList<>();
     private List<Integer> anoList = new ArrayList<>();
     private Integer selectedMes = calendar.get(Calendar.MONTH) + 1;
@@ -69,12 +72,27 @@ public class ConsumoNisBean {
 
     @PostConstruct
     private void init() {
-        getConsumoNisList();
+        getConsumoNisCompletoList();
+        getConsumoNisComIndList();
     }
 
-    public List<ConsumoNisModel> getConsumoNisList() {
+    public List<ConsumoNisModel> getConsumoNisCompletoList() {
+        return getConsumoNisList(true);
+    }
+    
+    public List<ConsumoNisModel> getConsumoNisComIndList() {
+        return getConsumoNisList(false);
+    }
+    
+    public List<ConsumoNisModel> getConsumoNisList(Boolean listaCompleta) {
         try {
-            List<Object[]> list = tblIndUsiRegistroLecturasRepository.getConsumoNis(selectedMes, selectedAno);
+            List<Object[]> list;
+            if(listaCompleta){
+                list = tblIndUsiRegistroLecturasRepository.getConsumoNisCompleto(selectedMes, selectedAno);
+            }else{
+                list = tblIndUsiRegistroLecturasRepository.getConsumoNisComInd(selectedMes, selectedAno);
+            }
+             
             consumoNisList = new ArrayList<>();
             list.stream().forEach((o) -> {
                 ConsumoNisModel cnm = new ConsumoNisModel();
@@ -100,6 +118,8 @@ public class ConsumoNisBean {
             return null;
         }
     }
+    
+    
 
     public String formatNis(String s) {
         if (s.length() >= 6) {
@@ -110,17 +130,31 @@ public class ConsumoNisBean {
     }
 
     /**
-     * @return the consumoNisFilteredList
+     * @return the consumoNisCompletoFilteredList
      */
-    public List<ConsumoNisModel> getConsumoNisFilteredList() {
-        return consumoNisFilteredList;
+    public List<ConsumoNisModel> getConsumoNisCompletoFilteredList() {
+        return consumoNisCompletoFilteredList;
     }
 
     /**
-     * @param consumoNisFilteredList the consumoNisFilteredList to set
+     * @param consumoNisCompletoFilteredList the consumoNisCompletoFilteredList to set
      */
-    public void setConsumoNisFilteredList(List<ConsumoNisModel> consumoNisFilteredList) {
-        this.consumoNisFilteredList = consumoNisFilteredList;
+    public void setConsumoNisCompletoFilteredList(List<ConsumoNisModel> consumoNisCompletoFilteredList) {
+        this.consumoNisCompletoFilteredList = consumoNisCompletoFilteredList;
+    }
+    
+    /**
+     * @return the consumoNisComIndFilteredList
+     */
+    public List<ConsumoNisModel> getConsumoNisComIndFilteredList() {
+        return consumoNisComIndFilteredList;
+    }
+
+    /**
+     * @param consumoNisComIndFilteredList the consumoNisComIndFilteredList to set
+     */
+    public void setConsumoNisComIndFilteredList(List<ConsumoNisModel> consumoNisComIndFilteredList) {
+        this.consumoNisComIndFilteredList = consumoNisComIndFilteredList;
     }
 
     /**
