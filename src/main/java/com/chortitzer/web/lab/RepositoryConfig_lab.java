@@ -1,10 +1,10 @@
-package com.chortitzer.web.lab;
+/*package com.chortitzer.web.lab;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- */
+ *//*
 import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -46,4 +46,4 @@ public class RepositoryConfig_lab {
         return new JpaTransactionManager(labEntityManagerFactory(factory).getObject());
     }
 
-}
+}*/

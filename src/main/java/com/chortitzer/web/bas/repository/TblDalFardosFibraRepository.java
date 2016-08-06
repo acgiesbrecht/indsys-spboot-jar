@@ -69,5 +69,14 @@ public interface TblDalFardosFibraRepository extends JpaRepository<TblDalFardosF
             + "                GROUP BY descripcion, mic"
             + "                ORDER BY descripcion, mic", nativeQuery = true)
     public List<Object[]> getResumenByAnoAndEmpresa(int ano, int empresaId); //DalResumenFibraModel
+    
+    @Query(value = "SELECT t FROM TblDalFardosFibra t WHERE t.tblDalLotes.id = ?1 ORDER BY t.tblDalFardosFibraPK.id")
+    public List<TblDalFardosFibra> getDetalleByLote(Integer lote);
+    
+    @Query(value = "SELECT t FROM TblDalFardosFibra t WHERE YEAR(t.fechahora) = ?1 AND t.tblDalLotes.idProductor.id = ?2 ORDER BY t.tblDalFardosFibraPK.id")
+    public List<TblDalFardosFibra> getDetalleByAnoAndEmpresa(Integer ano, Integer empresaId);
+    
+    @Query(value = "SELECT t FROM TblDalFardosFibra t WHERE YEAR(t.fechahora) = ?1 ORDER BY t.tblDalFardosFibraPK.id")
+    public List<TblDalFardosFibra> getDetalleByAno(Integer ano);
 
 }

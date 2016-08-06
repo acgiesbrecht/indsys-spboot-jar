@@ -41,11 +41,12 @@ public interface TblpesadasRepository extends JpaRepository<Tblpesadas, Integer>
     @Query("SELECT t.id, t.fechahora, "
             + "                        (t.bruto-t.tara) AS peso, "
             + "                        ((t.bruto-t.tara)*0.2) AS pesoanticipo, "
-            + "                        ((t.bruto-t.tara)*0.2*precioGsPorKg) AS pago "
-            + "               FROM Tblpesadas t "
+            + "                        ((t.bruto-t.tara)*0.2*t.precioGsPorKg) AS pago "
+            + "               FROM Tblpesadas t, TblDalLotes l "
             + "               WHERE (t.productoid.id = 64 "
             + "                        OR t.productoid.id = 83) "
-            + "                        AND t.idLote = ?1"
+            + "                        AND t.idLote = l.id "
+            + "                        AND l.nroLoteAnual = ?1"
             + "                        AND t.bruto > -1 AND t.tara > -1")
     public List<Object[]> getLiquidacionByLote(Integer lote);
 

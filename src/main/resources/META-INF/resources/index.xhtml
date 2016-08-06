@@ -41,6 +41,8 @@
                                                 actionListener="#{layoutController.setNavigation('/admin/empleados.xhtml')}" />-->
                                 </p:submenu>
                                 <p:submenu label="Algodon">
+                                    <p:menuitem value="Detalle" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/dal/fardos.xhtml')}" />
                                     <p:menuitem value="Resumen" update=":contentPanel"
                                                 actionListener="#{layoutController.setNavigation('/dal/resumen.xhtml')}" />
                                     <p:menuitem value="Liquidacion" update=":contentPanel"

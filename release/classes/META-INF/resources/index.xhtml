@@ -41,6 +41,8 @@
                                                 actionListener="#{layoutController.setNavigation('/admin/empleados.xhtml')}" />-->
                                 </p:submenu>
                                 <p:submenu label="Algodon">
+                                    <p:menuitem value="Detalle" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/dal/fardos.xhtml')}" />
                                     <p:menuitem value="Resumen" update=":contentPanel"
                                                 actionListener="#{layoutController.setNavigation('/dal/resumen.xhtml')}" />
                                     <p:menuitem value="Liquidacion" update=":contentPanel"
@@ -71,8 +73,10 @@
                                                 actionListener="#{layoutController.setNavigation('/fps/horario.xhtml')}" />
                                 </p:submenu>-->
                                 <p:submenu label="Energia">
-                                    <p:menuitem value="Comsumo NIS" update=":contentPanel"
-                                                actionListener="#{layoutController.setNavigation('/usi/consumoNis.xhtml')}" />
+                                    <p:menuitem value="Comsumo NIS Completo" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/consumoNisCompleto.xhtml')}" />
+                                    <p:menuitem value="Comsumo NIS Comercial e Industrial" update=":contentPanel"
+                                                actionListener="#{layoutController.setNavigation('/usi/consumoNisComInd.xhtml')}" />
                                     <p:menuitem value="NIS sin Lectura" update=":contentPanel"
                                                 actionListener="#{layoutController.setNavigation('/usi/nisSinLectura.xhtml')}" />
                                     <p:separator />

@@ -4,13 +4,13 @@ com\chortitzer\web\admin\repository\RrhhEmpleadosRepository.class
 com\chortitzer\web\bas\domain\TblDalBonificacionValores.class
 com\chortitzer\web\usi\domain\NisUsuario.class
 com\chortitzer\web\bas\domain\TblDalFardosFibra.class
+com\chortitzer\web\bas\controller\DalFardosDetalleBean.class
 com\chortitzer\web\lab\domain\LabTipoAnalisis.class
 com\chortitzer\web\bas\repository\DetalleGranosRepository.class
 org\alternativevision\gpx\beans\GPX.class
 com\chortitzer\web\bas\repository\DetalleSesamoRepository.class
 com\chortitzer\web\bas\repository\TblDalFibraTiposRepository.class
 com\chortitzer\web\WebSecurityConfig.class
-com\chortitzer\web\lab\RepositoryConfig_lab.class
 com\chortitzer\industria\web\dao\lab\Dao_lab.class
 com\chortitzer\web\lab\domain\LabMuestras.class
 com\chortitzer\web\Application.class
@@ -62,7 +62,6 @@ com\chortitzer\web\lab\domain\LabSemillasEspecies.class
 com\chortitzer\web\lab\domain\LabTipoMuestraSublineas.class
 com\chortitzer\web\bas\domain\DetalleSesamo.class
 com\chortitzer\web\bas\domain\Tblpesadas.class
-com\chortitzer\web\common\Interval.class
 org\alternativevision\gpx\extensions\DummyExtensionParser.class
 org\alternativevision\gpx\log\ILogger.class
 org\alternativevision\gpx\log\Log4JLogger.class
@@ -88,6 +87,7 @@ com\chortitzer\web\admin\controller\EmpleadosBean.class
 com\chortitzer\web\lab\repository\LabClientesRepository.class
 com\chortitzer\web\bas\repository\TblempresaRepository.class
 com\chortitzer\web\usi\controller\ActualizarGarminBean.class
+com\chortitzer\web\bas\controller\BonificacionConverter.class
 com\chortitzer\web\fps\domain\TblFpsLotes.class
 org\alternativevision\gpx\GPXParser.class
 com\chortitzer\web\admin\domain\RrhhEmpleados.class
